@@ -1,0 +1,48 @@
+GIVEN AN ARRAY, FIND ALL SUBARRAYS OF LENGTH K
+
+So you'd think to pass once, and create each subarray.
+
+array_received = [1, 2, 3, 4, 5, 6]
+combinations = []
+for (int i = 0; i < length - k; i++) {
+    combinations.append([array_received[i], array_received[i+1], array_received[i+2]])
+}
+return combinations;
+
+FIXED-SIZE SLIDING WINDOW
+
+I guess this solution I just wrote is O(N-k), since I go through N-k elements at most.
+But really, if I wanted all combinations, then it would be more complex.
+
+I guess what the guy in the video is proposing is a nested for-each thing.
+Where the inner for-loop iterates over the next "k" elements.
+
+In a Sliding Window, you realize that for the subarrays, there's a lot in common between adjacent subarrays.
+Thus, it's easier to look at the difference between them, rather than calculating similar subarrays from 0.
+
+Let's look at the difference between subarrays. It's usually the first and last values.
+[1, 2, 3] and [2, 3, 4]
+
+This guy is not getting exactly all subarrays, but a SUM of each subarray
+therefore, 1+2+3 = 6
+When he slides the window one position, he just gets the 4 and the 1
+    6 - 1 (because it's outside the window) = 5
+    5 + 4 (because now "4" is inside the window) = 9
+
+The new sum, thus, is = 9.
+
+DYNAMICALLY-SIZED SLIDING WINDOW
+
+Find the shortest subarray with the sum that's greater or equal to X.
+X = 7
+[1, 2, 3, 4, 5, 6]
+There are many solutions which would be >=7
+Our shortest, as we know, is [3, 4], [4, 5], OR[5, 6]
+
+How does this work? We do NOT know beforehand the size of window we need.
+Well, you expand, expand and expand the window, until your result meets the condition you need.
+Once you find a subarray, then you try to contract it from the other side (the beginning), until it's the smallest it can be while keeping the solution.
+
+So for this to work, I guess you keep two variables:
+minLength = integer
+minSolution = [] array of values with min_solution.

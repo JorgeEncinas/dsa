@@ -1,0 +1,49 @@
+PROBLEM DESCRIPTION
+    Given two non-empty Linked Lists representing 2 non-negative integers.
+    2 -> 4 -> 3 (342)
+    5 -> 6 -> 4 (465)
+
+    The digits are stored in REVERSE ORDER, and each of their nodes contains a single digit.
+    
+    ADD THE 2 NUMBERS AND RETURN THE SUM AS A LINKED LIST.
+    You may assume the two numbers do not contain any leading zero, except the number 0 itself.
+
+    The first solution I'd think of is to iterate through both at the same time.
+    You'd have to keep going for as long as the biggest of the two numbers.
+
+    Say:
+    9 -> 4 -> 7 -> 5 -> 4 -> 3 (345749)
+    5 -> 6 -> 4                   (465)
+
+    Really, you just care to sum all the way up to the "5" of the bigger number.
+    Because if you add 7+4, you must add the carry-over to the "5" digit.
+    Then the rest of the digits must be appended to the linked-list, but they're unchanged.
+
+    Another solution I can think of is trying to recreate the numbers, and let the program do the sum.
+    That still requires going through both. Append digits to two different strings: one per number.
+    So you'd end up with two strings like this:
+     string a = "345749"
+     string b = "465"
+     Then, parse them to integer and do the operation (int)a+(int)b
+
+     Finally, parse the integer back and add each digit to a new LinkedList
+     That requires going through the whole complete number, which seems wastefufa-li
+     Not to mention all the parsing we're doing.
+
+    What's the runtime?
+    Well, you pass through the elements just once, so O(N).
+    More specifically (sorry, I read this before writing it down)
+    It's O(max(a, b)).
+    That is, you have to go through at least all the digits of the bigger number
+    I'd say it could be even O(a+1) sometimes. Suppose a.length = b.length
+    If the last digits were both 9's, you'd also have to consider the carryover. Thus, you'd need to add one more digit.
+
+    Sorry, I read the space complexity too. It's O(1) space. Though I'm not sure why yet.
+    I'd say you save one linked-list only, yes, which has O(n+1) digits at most. But because that's the solution,
+    I really don't know if it counts.
+
+    Sure, here's what the site says:
+    The length of the new list is at most max⁡(m,n)+1
+    However, we don't count the answer as part of the space complexity.
+
+    Turns out it might as well be the solution, as there's no other one.

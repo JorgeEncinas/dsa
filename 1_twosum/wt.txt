@@ -1,0 +1,106 @@
+BRUTE FORCE APPROACH
+
+Here, you find a value that meets TARGET - X = VALUE
+
+int[] nums;
+int target;
+
+for (int i = 0; i < nums.length; i++) {
+    for (int j = i + 1; j < nums.length, j++) { <-- Notice here we start "j" at i+1. So each pass we're going through less items.
+
+    }
+}
+
+As Laakmann McDowell states:
+For the runtime, each time we're doing less steps in the inner "for" loop. First, it's N-1 times, then N-2 times, then N-3, ...
+Until it's just 0.
+See it backwards: 0, then 1, then 2, then 3, ... all the way up to N-1.
+The sum of 1 through N-1 is (N (N-1) / 2). We're not talking about time or runtime, just about a mathematical fact.
+When you see series in high-school or middle-school or whatever, to calculate a series you can just skip adding every term, and calculate
+"(N*(N+1) / 2)"
+
+If you drew the whole square, and each time you started i = 0, j = 0.
+Then there would be a total of N^2 pairs.
+    Let's see it: [1, 2, 3, 4, 5]
+
+    (1, 1) (1, 2) (1, 3) (1, 4) (1, 5)
+    (2, 1) (2, 2) (2, 3) (2, 4) (2, 5)
+    (3, 1) (3, 2) (3, 3) (3, 4) (3, 5)
+    (4, 1) (4, 2) (4, 3) (4, 4) (4, 5)
+    (5, 1) (5, 2) (5, 3) (5, 4) (5, 5)
+
+Since we're always starting j = i+1, we're not really printing the whole thing, but roughly half of it.
+           (1, 2) (1, 3) (1, 4) (1, 5)
+                  (2, 3) (2, 4) (2, 5)
+                         (3, 4) (3, 5)
+                                (4, 5)
+
+I said roughly. This is a common pattern. If you started, for whatever reason, j=i
+
+    (1, 1) (1, 2) (1, 3) (1, 4) (1, 5)
+           (2, 2) (2, 3) (2, 4) (2, 5)
+                  (3, 3) (3, 4) (3, 5)
+                         (4, 4) (4, 5)
+                                (5, 5)
+
+See how this is also roughly half? 
+So the code goes through, roughly, (n^2)/2 pairs (roughly half)
+In "Big O" terms, it still goes through O(n^2) work.
+
+APPROACH 2: TWO-PASS HASH TABLE
+    We need a more efficient way to check if the complement exists in the array.
+    If the complement exists, get its index.
+    So basically, by saving as "key" the values present,
+    On the second pass through the elements, we try to access that key: (target-current_value_in_the_pass)
+    Say we have the following: [1, 2, 3, 5, 4, 6]
+    And we want to add up to 8
+    So the dictionary will have been defined, on the first pass, as follows:
+    dictionary: {
+        1: 0,
+        2: 1,
+        3: 2,
+        4: 4,
+        5: 3,
+        6: 5
+    }
+    The "key" is the number, and the "value" is its index on the list.
+ When we go through it the second time:
+    I am at the very first value: 1.
+    I check for dictionary.get((target-value)). Target = 8, value = 1, because I am at the value=1.
+    So it checks for target-value = 7
+    Is there 7 on this dictionary?
+    dictionary[7] returns NULL, because there's no 7.
+    So I can just move on to the next value:
+    Target = 8, value = 2. Target - Value = 6.
+    dictionary[6] returns 5.
+    That is, it DOES exist. So give me that index!
+
+    Thus, I can now return the index I'm currently at: (for 2, the index is 1), and the index for value 6 (which is index 5.)
+    Done!
+
+    What are the runtime and space complexities?
+        For runtime, it's O(2N), since we're passing 2 times each. That simplifies to O(N)
+        For space, we're saving each element in a dictionary, so we're saving N elements, thus, O(N) space.
+
+    I think we'll usually see this pattern: for a better runtime, you need some way of remembering things,
+    For a better runtime, you need to save data into a Data Structure that fits an efficient way of access.
+
+APPROACH 3: ONE-PASS HASH TABLE.
+    Now we can do it in one pass too!
+    How would we do that?
+    My best guess is to check if the answer value has already been set.
+    If so, then we can just return the indices.
+
+    I've implemented it. You do it in One pass,
+    Say our array was [2, 4, 4, 4, 4, 5]. And the value we want is 7.
+    In that case, we know the solution is [0,5]
+    That is: the values we need are 2 and 5.
+    When we start at 2, and look for dict(target-value) = dict(7-2) = dict(5),
+    5 won't be there yet. We haven't registered it.
+    It is until we get to 5, that we look for dict(7-5) = dict(2),
+    that we'll get the answer.
+
+    Thus, in complexity:
+        Runtime: O(N) at worst, since we'll have to go through all elements.
+        Space: O(N-1) at worst, since we'll have to save all elements except the last.
+            Or perhaps O(N), if you don't find the answer at the end.
