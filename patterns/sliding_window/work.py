@@ -74,6 +74,63 @@ def findSumShortestSubarray(target):
     print(f"FINAL: {chosen_values}, MIN_LENGTH: {min_window_size}")
 
 
+#Here's "Byte by Byte"'s implementation https://www.youtube.com/watch?v=GcW4mgmgSbw
+#FIXED WINDOW
+def fixed_sliding_window(arr, k):
+    curr_subarray = sum(arr[:k])
+    result = [curr_subarray]
+    for i in range(1, len(arr)-k+1):
+        curr_subarray = curr_subarray - arr[i-1]
+        curr_subarray = curr_subarray + arr[i+k-1]
+        result.append(curr_subarray)
+    
+    return result
+
+#DYNAMIC-SIZE SLIDING WINDOW
+def dynamic_sliding_window(arr, x): #[1, 2, 3, 4, 5, 6]
+    min_length = float('inf')
+    start = 0
+    end = 0
+    curr_sum = 0
+
+    while end < len(arr):
+        curr_sum = curr_sum + arr[end]
+        end += 1
+
+        while start < end and curr_sum >= x:
+            curr_sum = curr_sum - arr[start]
+            start += 1
+
+            min_length = min(min_length, end-start+1)
+        
+        return min_length
+
+#It's a much cleaner-looking solution.
+# Let's write down the differences.
+# First, they never check while the window's getting bigger per se.
+# I think the "min(min_length, end-start+1)" requires that +1, because it's first deleting that element and diminishing the length
+# So it is compensating for that.
+
+# I'll try to write it out from just having that quick glance.
+
+def dsw(target):
+    arr = [1, 2, 3, 4, 5, 6]
+    start = 0
+    end = 0
+    min_len = 9999999999
+    curr_sum = 0
+
+    while (end < len(arr)):
+        curr_sum += arr[end]
+        end+=1
+        while start<end and curr_sum >= target:
+            min_len = min(min_len, end-start)
+            curr_sum -= arr[start]
+            start -= 1
+        
+    print(f"sum: {curr_sum}, min_len: {min_len}")
+
+#And that's it. How elegant a solution.
 
 if __name__ == "__main__":
     #resultFixedSW = findAllSubarraySums(k=3)
