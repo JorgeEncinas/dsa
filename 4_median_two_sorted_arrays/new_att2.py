@@ -6,11 +6,15 @@ class Solution(object):
         array_half = len(arr)/2
         return float((arr[array_half] + arr[array_half-1]) / 2.0) if mustGetTwoValues else float(arr[array_half])
 
-    def getMedian(self, value1, value2, isEven):
-        if(isEven):
-            return float((value1+value2)/2.0)
+    def getMedian(self, sorted_arr, isEven):
+        if(len(sorted_arr) == 1):
+            return sorted_arr[0]
+        elif(len(sorted_arr) == 0):
+            return 0
+        elif(isEven):
+            return float((sorted_arr[-1]+sorted_arr[-2])/2.0)
         else:
-            return float(value1) if value1>value2 else float(value2)
+            return float(sorted_arr[-1]) if sorted_arr[-1]>sorted_arr[-2] else float(sorted_arr[-2])
 
     def findMedianSortedArrays(self, num1, num2):
         """
@@ -38,8 +42,17 @@ class Solution(object):
         #elif(len(num2) == 0):
         #    return self.getNormalMedian(num1)
         steps = 0
-        start = num1 if num1[0] < num2[0] else num2
-        end = num2 if num1[0] < num2[0] else num1
+        if(len(num1) == 0 and len(num2) == 0):
+            return 0
+        elif(len(num1) == 0):
+            start = num2
+            end = num1
+        elif(len(num2) == 0):
+            start = num1
+            end = num2
+        else:
+            start = num1 if num1[0] < num2[0] else num2
+            end = num2 if num1[0] < num2[0] else num1
         while(j < len(start) and steps < middle_point):
             print(f"j: {j}, i: {i}, steps: {steps}, middle point: {middle_point}")
             sorted_arr.append(start[j])
@@ -55,10 +68,11 @@ class Solution(object):
                 steps +=1
             
         print(f"sorted_arr: {sorted_arr}")
-        return self.getMedian(sorted_arr[-2], sorted_arr[-1], mustGetTwoValues)
+        return self.getMedian(sorted_arr, mustGetTwoValues)
 
 if __name__ == "__main__":
     solution = Solution()
     #solved = solution.findMedianSortedArrays([1,3], [2])
-    solved = solution.findMedianSortedArrays([1, 2], [3, 4])
+    #solved = solution.findMedianSortedArrays([1, 2], [3, 4])
+    solved = solution.findMedianSortedArrays([], [1])
     print(solved)
