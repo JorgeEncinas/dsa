@@ -1,0 +1,26 @@
+4. Median of Two Sorted Arrays
+
+
+Given two sorted arrays nums1 and nums2 of size m and n respectively, return the median of the two sorted arrays.
+The overall run time complexity should be O(log (m+n)).
+
+My runtime and memory were pretty bad.
+My solution is basically going through both at the same time, right?
+And just appending the smaller of the two first.
+Kind of like a "zipper".
+
+Lastly, get the length of the array, and from that, the median.
+Bc we don't know till we know the length, right?
+
+Another way would be to sum the two lengths.
+So we know that, for [1,2] and [3, 4], the total length will be 4.
+Thus, we must get the values that correspond to the 2, 3 values.
+Then we must go slowly up through both at the same time, choosing the smaller of the two elements.
+Until we count to the median values.
+At most, you'd go through half+1 of the elements.
+
+Bc there's no way to know, if I drop at the middle of any of the two
+If I should go up or down by a lot.
+Might as well choose to start at the beginning.
+
+
