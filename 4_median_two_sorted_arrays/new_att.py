@@ -57,7 +57,6 @@ class Solution(object):
                 median = self.getMedian(value1, value2, False)
                 print(F"MEDIAN: {median}")
                 return median
-            if(i > len(num1)): #step on num2
             value_at_num1 = num1[i]
             value_at_num2 = num2[j]
             if(value_at_num1 == value_at_num2):
@@ -70,7 +69,7 @@ class Solution(object):
                     print(f"Picked value 2 on equal {value_at_num2}")
                     sorted_arr.append(value_at_num2)
                     j+=1
-            elif (value_at_num1 < value_at_num2):
+            if (i < len(num1) and value_at_num1 < value_at_num2):
                 print(f"Picked value 1: {value_at_num1} | {value_at_num1} vs {value_at_num2}")
                 sorted_arr.append(value_at_num1)
                 i += 1
